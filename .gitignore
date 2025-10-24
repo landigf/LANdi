@@ -1,0 +1,17 @@
+# Build
+build/
+cmake-build*/
+*.o
+*.obj
+*.exe
+*.dll
+*.dylib
+
+# IDEs
+.vscode/
+.idea/
+
+# Node
+ui/node_modules/
+ui/.next/
+
