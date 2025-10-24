@@ -31,14 +31,6 @@ landi/
 
 -----------------------------------------------------------------------
 
-Quick start ->
-git clone https://github.com/<your-username>/LANdi.git
-cd LANdi
-
-Then explore the folders and read MANIFESTO.md
-
------------------------------------------------------------------------
-
 Philosophy ->
 I’m not trying to make a big or complex tool.
 I just want LANdi to be clear, reusable, and educational.
