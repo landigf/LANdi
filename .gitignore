@@ -15,3 +15,23 @@ cmake-build*/
 ui/node_modules/
 ui/.next/
 
+# Runs
+runs/
+core/*.o
+
+# Local tools and dependencies
+dev-tools/
+build/
+.vscode/
+.idea/
+*.o
+*.obj
+*.exe
+*.dll
+*.dylib
+
+# macOS
+.DS_Store
+
+# Doxygen generated files
+docs/doxygen/
