@@ -1,0 +1,93 @@
+version: '3'
+
+networks:
+  frr-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16
+
+services:
+  R1:
+    image: frrouting/frr:v8.4.0
+    container_name: clab-frr01-R1
+    privileged: true
+    networks:
+      frr-net:
+        ipv4_address: 10.0.0.11
+    volumes:
+      - /tmp
+    command: >
+      bash -c "
+      /usr/lib/frr/frrinit.sh start &&
+      tail -f /dev/null
+      "
+
+  R2:
+    image: frrouting/frr:v8.4.0
+    container_name: clab-frr01-R2
+    privileged: true
+    networks:
+      frr-net:
+        ipv4_address: 10.0.0.2
+    volumes:
+      - /tmp
+    command: >
+      bash -c "
+      /usr/lib/frr/frrinit.sh start &&
+      tail -f /dev/null
+      "
+
+  R3:
+    image: frrouting/frr:v8.4.0
+    container_name: clab-frr01-R3
+    privileged: true
+    networks:
+      frr-net:
+        ipv4_address: 10.0.0.3
+    volumes:
+      - /tmp
+    command: >
+      bash -c "
+      /usr/lib/frr/frrinit.sh start &&
+      tail -f /dev/null
+      "
+
+  PC1:
+    image: alpine:latest
+    container_name: clab-frr01-PC1
+    privileged: true
+    networks:
+      frr-net:
+        ipv4_address: 10.0.1.10
+    command: >
+      sh -c "
+      apk add --no-cache iproute2 iputils bind-tools tcpdump traceroute &&
+      tail -f /dev/null
+      "
+
+  PC2:
+    image: alpine:latest
+    container_name: clab-frr01-PC2
+    privileged: true
+    networks:
+      frr-net:
+        ipv4_address: 10.0.2.10
+    command: >
+      sh -c "
+      apk add --no-cache iproute2 iputils bind-tools tcpdump traceroute &&
+      tail -f /dev/null
+      "
+
+  PC3:
+    image: alpine:latest
+    container_name: clab-frr01-PC3
+    privileged: true
+    networks:
+      frr-net:
+        ipv4_address: 10.0.3.10
+    command: >
+      sh -c "
+      apk add --no-cache iproute2 iputils bind-tools tcpdump traceroute &&
+      tail -f /dev/null
+      "

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta NPE Networking Lab Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            color: #e0e7ff;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #22c55e;
+            color: #fff;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        
+        .topology {
+            background: #161b22;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid #30363d;
+        }
+        
+        .topology h2 {
+            margin-bottom: 20px;
+            color: #58a6ff;
+        }
+        
+        .network-diagram {
+            font-family: 'Courier New', monospace;
+            background: #0d1117;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 14px;
+            color: #8b949e;
+        }
+        
+        .node {
+            color: #58a6ff;
+            font-weight: bold;
+        }
+        
+        .ip {
+            color: #79c0ff;
+        }
+        
+        .section {
+            background: #161b22;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #30363d;
+        }
+        
+        .section h2 {
+            color: #58a6ff;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .badge {
+            background: #1f6feb;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.5em;
+            font-weight: normal;
+        }
+        
+        .exercise {
+            background: #0d1117;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1f6feb;
+        }
+        
+        .exercise h3 {
+            color: #79c0ff;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .command {
+            background: #000;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            position: relative;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: 1px solid #30363d;
+        }
+        
+        .command-label {
+            color: #8b949e;
+            font-size: 0.85em;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .command code {
+            color: #79c0ff;
+            display: block;
+            word-wrap: break-word;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: #2ea043;
+        }
+        
+        .copy-btn:active {
+            background: #1a7f37;
+        }
+        
+        .explanation {
+            background: #1c2128;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border-left: 3px solid #58a6ff;
+        }
+        
+        .explanation h4 {
+            color: #58a6ff;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .expected-output {
+            background: #0a0c10;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #8b949e;
+            border: 1px solid #30363d;
+        }
+        
+        .notes-link {
+            display: inline-block;
+            background: #6e40c9;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            margin: 5px;
+            transition: background 0.2s;
+        }
+        
+        .notes-link:hover {
+            background: #8250df;
+        }
+        
+        .warning {
+            background: #1e293b;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        
+        .warning strong {
+            color: #fbbf24;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #1f6feb;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .quick-ref {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .quick-ref-item {
+            background: #0d1117;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #30363d;
+        }
+        
+        .quick-ref-item h4 {
+            color: #79c0ff;
+            margin-bottom: 8px;
+        }
+        
+        .quick-ref-item code {
+            color: #fbbf24;
+            font-size: 0.9em;
+        }
+        
+        .collapsible {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .collapsible::before {
+            content: '▼ ';
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        
+        .collapsible.collapsed::before {
+            transform: rotate(-90deg);
+        }
+        
+        .collapsible-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .collapsible-content.collapsed {
+            max-height: 0;
+        }
+        
+        .success {
+            color: #3fb950;
+        }
+        
+        .highlight {
+            background: #1f6feb;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Meta NPE Networking Lab</h1>
+            <div class="subtitle">Interactive Hands-On Crash Course</div>
+            <div class="status">✓ Lab Running - 6 Containers Active</div>
+        </header>
+
+        <div class="topology">
+            <h2>🗺️ Network Topology</h2>
+            <div class="network-diagram">
+<pre>
+    <span class="node">PC1</span> <span class="ip">(10.0.1.10)</span>
+      |
+      |--- <span class="node">R1</span> <span class="ip">(10.0.0.11)</span> --- <span class="node">R2</span> <span class="ip">(10.0.0.2)</span> --- <span class="node">R3</span> <span class="ip">(10.0.0.3)</span>
+      |                                             |
+    <span class="node">PC2</span> <span class="ip">(10.0.2.10)</span>                                 <span class="node">PC3</span> <span class="ip">(10.0.3.10)</span>
+
+<span class="node">Containers:</span>
+• clab-frr01-PC1, PC2, PC3 (Alpine Linux + net tools)
+• clab-frr01-R1, R2, R3 (FRRouting v8.4.0)
+</pre>
+            </div>
+        </div>
+
+        <!-- QUICK START -->
+        <div class="section">
+            <h2><span class="step-number">1</span> Quick Start</h2>
+            
+            <div class="exercise">
+                <h3>🔌 Connect to PC1</h3>
+                <div class="command">
+                    <div class="command-label">Run this in your terminal:</div>
+                    <code>docker exec -it clab-frr01-PC1 sh</code>
+                    <button class="copy-btn" onclick="copyCommand('docker exec -it clab-frr01-PC1 sh')">Copy</button>
+                </div>
+                <div class="explanation">
+                    <h4>What this does:</h4>
+                    <p>Opens an interactive shell inside the PC1 container where you can run Linux networking commands.</p>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h3>🔍 First 5 Commands (Run Inside Container)</h3>
+                
+                <div class="command">
+                    <div class="command-label">1. Show network interfaces:</div>
+                    <code>ip a</code>
+                    <button class="copy-btn" onclick="copyCommand('ip a')">Copy</button>
+                </div>
+                <div class="explanation">
+                    <h4>What to look for:</h4>
+                    <p>• Interface name: <code>eth0</code><br>
+                    • IP address: <code>10.0.1.10/16</code><br>
+                    • MAC address: <code>link/ether</code><br>
+                    • State: <code>UP</code></p>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">2. Show routing table:</div>
+                    <code>ip r</code>
+                    <button class="copy-btn" onclick="copyCommand('ip r')">Copy</button>
+                </div>
+                <div class="explanation">
+                    <h4>What to look for:</h4>
+                    <p>• Default gateway: <code>default via 10.0.0.1</code><br>
+                    • Local subnet: <code>10.0.0.0/16 dev eth0</code></p>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">3. Test connectivity to R1:</div>
+                    <code>ping -c 3 10.0.0.11</code>
+                    <button class="copy-btn" onclick="copyCommand('ping -c 3 10.0.0.11')">Copy</button>
+                </div>
+                <div class="explanation">
+                    <h4>What to look for:</h4>
+                    <p>• 3 packets transmitted, 3 received<br>
+                    • 0% packet loss<br>
+                    • RTT (round-trip time) < 1ms</p>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">4. Check ARP cache:</div>
+                    <code>ip neigh</code>
+                    <button class="copy-btn" onclick="copyCommand('ip neigh')">Copy</button>
+                </div>
+                <div class="explanation">
+                    <h4>What to look for:</h4>
+                    <p>• Router's IP → MAC mapping<br>
+                    • State: <code>REACHABLE</code> or <code>STALE</code><br>
+                    • This shows Layer 2 (MAC) resolution</p>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">5. Exit container:</div>
+                    <code>exit</code>
+                    <button class="copy-btn" onclick="copyCommand('exit')">Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENARIO 1: TCP CONNECTION ANALYSIS -->
+        <div class="section">
+            <h2><span class="step-number">2</span> Scenario 1: TCP Connection Analysis</h2>
+            
+            <div class="exercise">
+                <h3>🎯 Goal: Understand TCP handshake and connections</h3>
+                
+                <div class="command">
+                    <div class="command-label">Connect to R1 router:</div>
+                    <code>docker exec -it clab-frr01-R1 bash</code>
+                    <button class="copy-btn" onclick="copyCommand('docker exec -it clab-frr01-R1 bash')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Install & start simple HTTP server:</div>
+                    <code>apt update && apt install -y python3 && python3 -m http.server 8080 &</code>
+                    <button class="copy-btn" onclick="copyCommand('apt update && apt install -y python3 && python3 -m http.server 8080 &')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Check listening sockets:</div>
+                    <code>ss -tuln</code>
+                    <button class="copy-btn" onclick="copyCommand('ss -tuln')">Copy</button>
+                </div>
+                <div class="explanation">
+                    <h4>What you'll see:</h4>
+                    <p>• <code>LISTEN</code> on port 8080<br>
+                    • Socket bound to <code>0.0.0.0:8080</code> (all interfaces)<br>
+                    • State: <code>LISTEN</code></p>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">From PC1, make HTTP request:</div>
+                    <code>docker exec -it clab-frr01-PC1 wget -O- http://10.0.0.11:8080</code>
+                    <button class="copy-btn" onclick="copyCommand('docker exec -it clab-frr01-PC1 wget -O- http://10.0.0.11:8080')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Back in R1, check established connections:</div>
+                    <code>ss -tan | grep 8080</code>
+                    <button class="copy-btn" onclick="copyCommand('ss -tan | grep 8080')">Copy</button>
+                </div>
+                <div class="explanation">
+                    <h4>What to analyze:</h4>
+                    <p>• <code>ESTABLISHED</code> connection from PC1<br>
+                    • Send-Q and Recv-Q buffers<br>
+                    • Local:8080 ↔ Remote:ephemeral_port</p>
+                </div>
+
+                <div class="warning">
+                    <strong>Interview Question:</strong> What happens during TCP 3-way handshake?<br>
+                    Answer: SYN → SYN-ACK → ACK. Client sends SYN with ISN, server responds with SYN-ACK and its ISN, client ACKs. Connection becomes ESTABLISHED.
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENARIO 2: PACKET CAPTURE -->
+        <div class="section">
+            <h2><span class="step-number">3</span> Scenario 2: Packet Capture with tcpdump</h2>
+            
+            <div class="exercise">
+                <h3>📡 Goal: Capture and analyze network traffic</h3>
+                
+                <div class="command">
+                    <div class="command-label">In R1, install tcpdump:</div>
+                    <code>apt install -y tcpdump</code>
+                    <button class="copy-btn" onclick="copyCommand('apt install -y tcpdump')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Start packet capture (run in background):</div>
+                    <code>tcpdump -i eth0 -w /tmp/capture.pcap &</code>
+                    <button class="copy-btn" onclick="copyCommand('tcpdump -i eth0 -w /tmp/capture.pcap &')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Generate some traffic (from PC1):</div>
+                    <code>docker exec -it clab-frr01-PC1 ping -c 5 10.0.0.11</code>
+                    <button class="copy-btn" onclick="copyCommand('docker exec -it clab-frr01-PC1 ping -c 5 10.0.0.11')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Stop tcpdump (in R1):</div>
+                    <code>killall tcpdump</code>
+                    <button class="copy-btn" onclick="copyCommand('killall tcpdump')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Read the capture:</div>
+                    <code>tcpdump -r /tmp/capture.pcap -n</code>
+                    <button class="copy-btn" onclick="copyCommand('tcpdump -r /tmp/capture.pcap -n')">Copy</button>
+                </div>
+                <div class="explanation">
+                    <h4>What to look for:</h4>
+                    <p>• ICMP echo request/reply packets<br>
+                    • Source/destination IPs<br>
+                    • Packet sizes and TTL values<br>
+                    • Timestamps between packets</p>
+                </div>
+
+                <div class="warning">
+                    <strong>Interview Question:</strong> How would you capture only HTTP traffic?<br>
+                    Answer: <code>tcpdump -i eth0 port 80 or port 443</code> or <code>tcpdump -i eth0 'tcp port 80'</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENARIO 3: BGP ROUTING -->
+        <div class="section">
+            <h2><span class="step-number">4</span> Scenario 3: BGP Routing Configuration</h2>
+            
+            <div class="exercise">
+                <h3>🛣️ Goal: Configure BGP and examine routing decisions</h3>
+                
+                <div class="command">
+                    <div class="command-label">Connect to R1 FRR shell:</div>
+                    <code>docker exec -it clab-frr01-R1 vtysh</code>
+                    <button class="copy-btn" onclick="copyCommand('docker exec -it clab-frr01-R1 vtysh')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Show BGP summary:</div>
+                    <code>show ip bgp summary</code>
+                    <button class="copy-btn" onclick="copyCommand('show ip bgp summary')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Show BGP neighbors:</div>
+                    <code>show ip bgp neighbors</code>
+                    <button class="copy-btn" onclick="copyCommand('show ip bgp neighbors')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Show routing table:</div>
+                    <code>show ip route</code>
+                    <button class="copy-btn" onclick="copyCommand('show ip route')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Show BGP routes:</div>
+                    <code>show ip bgp</code>
+                    <button class="copy-btn" onclick="copyCommand('show ip bgp')">Copy</button>
+                </div>
+
+                <div class="command">
+                    <div class="command-label">Exit vtysh:</div>
+                    <code>exit</code>
+                    <button class="copy-btn" onclick="copyCommand('exit')">Copy</button>
+                </div>
+
+                <div class="explanation">
+                    <h4>BGP Path Selection Algorithm (in order):</h4>
+                    <p>1. Highest <span class="highlight">Weight</span> (Cisco-specific, local to router)<br>
+                    2. Highest <span class="highlight">Local Preference</span> (within AS)<br>
+                    3. Locally originated routes<br>
+                    4. Shortest <span class="highlight">AS Path</span><br>
+                    5. Lowest <span class="highlight">Origin</span> (IGP < EGP < Incomplete)<br>
+                    6. Lowest <span class="highlight">MED</span> (Multi-Exit Discriminator)<br>
+                    7. eBGP > iBGP<br>
+                    8. Lowest IGP metric to next hop<br>
+                    9. Oldest route<br>
+                    10. Lowest Router ID</p>
+                </div>
+
+                <div class="warning">
+                    <strong>Interview Question:</strong> What's the difference between BGP and OSPF?<br>
+                    Answer: BGP is path-vector, used for inter-AS routing, focuses on policies. OSPF is link-state, used within AS, focuses on shortest path (Dijkstra).
+                </div>
+            </div>
+        </div>
+
+        <!-- SCENARIO 4: TROUBLESHOOTING -->
+        <div class="section">
+            <h2><span class="step-number">5</span> Scenario 4: Network Troubleshooting</h2>
+            
+            <div class="exercise">
+                <h3>🔧 Goal: Systematic troubleshooting methodology</h3>
+                
+                <h4 class="collapsible">Problem: Can't reach a service</h4>
+                <div class="collapsible-content">
+                    <div class="command">
+                        <div class="command-label">1. Test Layer 3 (IP) connectivity:</div>
+                        <code>ping &lt;destination_ip&gt;</code>
+                        <button class="copy-btn" onclick="copyCommand('ping ')">Copy</button>
+                    </div>
+
+                    <div class="command">
+                        <div class="command-label">2. Check routing:</div>
+                        <code>ip route get &lt;destination_ip&gt;</code>
+                        <button class="copy-btn" onclick="copyCommand('ip route get ')">Copy</button>
+                    </div>
+
+                    <div class="command">
+                        <div class="command-label">3. Trace the path:</div>
+                        <code>traceroute &lt;destination_ip&gt;</code>
+                        <button class="copy-btn" onclick="copyCommand('traceroute ')">Copy</button>
+                    </div>
+
+                    <div class="command">
+                        <div class="command-label">4. Check if port is open:</div>
+                        <code>nc -zv &lt;destination_ip&gt; &lt;port&gt;</code>
+                        <button class="copy-btn" onclick="copyCommand('nc -zv ')">Copy</button>
+                    </div>
+
+                    <div class="command">
+                        <div class="command-label">5. Check firewall rules:</div>
+                        <code>iptables -L -n</code>
+                        <button class="copy-btn" onclick="copyCommand('iptables -L -n')">Copy</button>
+                    </div>
+
+                    <div class="explanation">
+                        <h4>Hypothesis Tree:</h4>
+                        <p>• Network unreachable? → Check routes<br>
+                        • Ping works but service doesn't? → Check application<br>
+                        • Partial connectivity? → Check firewall/ACLs<br>
+                        • Slow response? → Check latency, packet loss, MTU</p>
+                    </div>
+                </div>
+
+                <h4 class="collapsible">Problem: High latency</h4>
+                <div class="collapsible-content">
+                    <div class="command">
+                        <div class="command-label">1. Measure latency with stats:</div>
+                        <code>ping -c 100 &lt;destination&gt;</code>
+                        <button class="copy-btn" onclick="copyCommand('ping -c 100 ')">Copy</button>
+                    </div>
+
+                    <div class="command">
+                        <div class="command-label">2. Check interface errors:</div>
+                        <code>ip -s link show eth0</code>
+                        <button class="copy-btn" onclick="copyCommand('ip -s link show eth0')">Copy</button>
+                    </div>
+
+                    <div class="command">
+                        <div class="command-label">3. Check TCP retransmissions:</div>
+                        <code>ss -ti | grep retrans</code>
+                        <button class="copy-btn" onclick="copyCommand('ss -ti | grep retrans')">Copy</button>
+                    </div>
+
+                    <div class="explanation">
+                        <h4>Common causes:</h4>
+                        <p>• Network congestion → Check link utilization<br>
+                        • Packet loss → Check error counters<br>
+                        • Path MTU issues → Test with different packet sizes<br>
+                        • Application slowness → Profile the app</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK REFERENCE -->
+        <div class="section">
+            <h2>📚 Quick Command Reference</h2>
+            
+            <div class="quick-ref">
+                <div class="quick-ref-item">
+                    <h4>Network Interfaces</h4>
+                    <code>ip a</code> - Show all interfaces<br>
+                    <code>ip link</code> - Show link status<br>
+                    <code>ip -s link</code> - Show statistics
+                </div>
+                
+                <div class="quick-ref-item">
+                    <h4>Routing</h4>
+                    <code>ip r</code> - Show routes<br>
+                    <code>ip route get IP</code> - Find route to IP<br>
+                    <code>ip route add</code> - Add route
+                </div>
+                
+                <div class="quick-ref-item">
+                    <h4>ARP / Neighbors</h4>
+                    <code>ip neigh</code> - Show ARP cache<br>
+                    <code>ip neigh flush all</code> - Clear cache<br>
+                    <code>arp -n</code> - Alternative command
+                </div>
+                
+                <div class="quick-ref-item">
+                    <h4>Socket Statistics</h4>
+                    <code>ss -tuln</code> - Listening sockets<br>
+                    <code>ss -tan</code> - TCP connections<br>
+                    <code>ss -ti</code> - TCP info with details
+                </div>
+                
+                <div class="quick-ref-item">
+                    <h4>DNS</h4>
+                    <code>dig example.com</code> - Query DNS<br>
+                    <code>dig +trace</code> - Full resolution path<br>
+                    <code>nslookup</code> - Alternative tool
+                </div>
+                
+                <div class="quick-ref-item">
+                    <h4>Packet Capture</h4>
+                    <code>tcpdump -i eth0</code> - Capture live<br>
+                    <code>tcpdump port 80</code> - Filter by port<br>
+                    <code>tcpdump -w file.pcap</code> - Save to file
+                </div>
+            </div>
+        </div>
+
+        <!-- INTERVIEW PREP -->
+        <div class="section">
+            <h2>🎤 Interview Talk-Tracks</h2>
+            
+            <div class="exercise">
+                <h3>Common Questions & 90-Second Answers</h3>
+                
+                <div class="explanation">
+                    <h4>Q: Explain the TCP 3-way handshake</h4>
+                    <p><strong>A:</strong> TCP uses a 3-way handshake to establish reliable connections. 
+                    (1) Client sends SYN with initial sequence number. 
+                    (2) Server responds with SYN-ACK containing its own sequence number and acknowledging client's. 
+                    (3) Client sends ACK to confirm. 
+                    This synchronizes sequence numbers for reliable, ordered data delivery. 
+                    I've debugged issues where SYN packets were dropped by firewalls - you'd see retransmissions in tcpdump.</p>
+                </div>
+
+                <div class="explanation">
+                    <h4>Q: How does BGP path selection work?</h4>
+                    <p><strong>A:</strong> BGP uses a multi-step algorithm. Key factors in order: 
+                    Weight (local), Local Preference (AS-wide), locally originated, AS Path length (shorter wins), 
+                    Origin type, MED, eBGP over iBGP, IGP metric. 
+                    In practice, you control outbound with Local Pref and inbound with AS Path prepending. 
+                    I've used this to implement traffic engineering - prepending AS path to make routes less preferred.</p>
+                </div>
+
+                <div class="explanation">
+                    <h4>Q: Troubleshoot: Users can't reach web server</h4>
+                    <p><strong>A:</strong> I follow OSI layers systematically. 
+                    (1) Physical/Link: Check interface status with <code>ip link</code>. 
+                    (2) Network: Test reachability with <code>ping</code>, check routing with <code>ip route get</code>. 
+                    (3) Transport: Verify port is listening with <code>ss -tuln</code>, test connectivity with <code>nc</code>. 
+                    (4) Application: Check service logs, test with <code>curl -v</code>. 
+                    I'd also check firewalls, ACLs, and security groups.</p>
+                </div>
+
+                <div class="explanation">
+                    <h4>Q: What's the difference between TCP and UDP?</h4>
+                    <p><strong>A:</strong> TCP is connection-oriented, reliable (ACKs, retransmissions, ordering), 
+                    with flow control and congestion control. Overhead from 3-way handshake and state tracking. 
+                    UDP is connectionless, unreliable (no ACKs), lower overhead. 
+                    Use TCP for data that must arrive correctly (HTTP, SSH). 
+                    Use UDP for real-time/latency-sensitive apps where some loss is acceptable (VoIP, video streaming, DNS queries).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESOURCES -->
+        <div class="section">
+            <h2>📖 Deep Dive Resources</h2>
+            <p>Open these files in VS Code for detailed notes:</p>
+            <br>
+            <a href="notes/tcp-deep-dive.md" class="notes-link">TCP Deep Dive</a>
+            <a href="notes/bgp-deep-dive.md" class="notes-link">BGP Deep Dive</a>
+            <a href="notes/protocol-comparisons.md" class="notes-link">Protocol Comparisons</a>
+            <a href="notes/hypothesis-trees.md" class="notes-link">Troubleshooting Trees</a>
+            <a href="notes/command-cheatsheet.md" class="notes-link">Command Cheatsheet</a>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="section" style="text-align: center; border: none; background: transparent;">
+            <p style="color: #8b949e;">
+                🎯 Meta NPE Networking Lab - Practice these scenarios until commands are muscle memory
+            </p>
+            <p style="color: #6e7681; margin-top: 10px;">
+                Stop lab: <code>docker-compose down</code> | 
+                Restart: <code>docker-compose up -d</code> | 
+                Check status: <code>docker ps</code>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function copyCommand(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.background = '#1a7f37';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#238636';
+                }, 1500);
+            });
+        }
+
+        // Collapsible sections
+        document.querySelectorAll('.collapsible').forEach(header => {
+            header.addEventListener('click', function() {
+                this.classList.toggle('collapsed');
+                const content = this.nextElementSibling;
+                content.classList.toggle('collapsed');
+            });
+        });
+
+        // Start with problem sections collapsed
+        document.querySelectorAll('.collapsible').forEach(el => {
+            el.classList.add('collapsed');
+            el.nextElementSibling.classList.add('collapsed');
+        });
+    </script>
+</body>
+</html>
